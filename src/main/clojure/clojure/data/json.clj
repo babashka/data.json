@@ -622,11 +622,11 @@
 (extend java.util.Date         JSONWriter {:-write write-date})
 (extend java.sql.Date          JSONWriter {:-write write-sql-date})
 ;; Attempt to support Clojure 1.2.x:
-(when-let [class (try (.. Thread currentThread getContextClassLoader
+#_(when-let [class (try (.. Thread currentThread getContextClassLoader
                           (loadClass "clojure.lang.BigInt"))
                       (catch ClassNotFoundException _ false))]
   (extend class JSONWriter {:-write write-bignum}))
-
+(extend clojure.lang.BigInt JSONWriter {:-write write-bignum})
 
 ;; Symbols, Keywords, and Strings
 (extend clojure.lang.Named     JSONWriter {:-write write-named})
@@ -746,7 +746,7 @@
     (pprint/with-pprint-dispatch #(pprint-dispatch % opts)
       (pprint/pprint x))))
 
-(load "json_compat_0_1")
+#_(load "json_compat_0_1")
 
 ;; Local Variables:
 ;; mode: clojure
